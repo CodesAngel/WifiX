@@ -1,228 +1,132 @@
 Installation Guide
 ==================
 
-This guide will walk you through installing WifiX on your system.
+This guide covers the supported ways to install and run WifiX. Most users
+should install a packaged release. Developers can run the desktop and Android
+projects from source.
 
 System Requirements
 -------------------
 
-**Minimum Requirements**
+Release Builds
+~~~~~~~~~~~~~~
 
-- **OS:** Windows 10+, macOS 10.15+, or Linux (Ubuntu 20.04+, Fedora 34+)
+- **Windows desktop:** Windows 10 or Windows 11, x64.
+- **Android mobile:** Android device or emulator with the matching APK.
+- **Network:** Host and client devices must be on the same LAN or Wi-Fi.
+
+Source Development
+~~~~~~~~~~~~~~~~~~
+
 - **Python:** 3.8 or higher
-- **Node.js:** 16.0 or higher
-- **RAM:** 512 MB available
-- **Disk Space:** 200 MB for installation
-- **Network:** Active LAN connection
+- **Node.js:** 18 or higher
+- **Rust:** Stable toolchain for Tauri builds
+- **Android Studio:** Required for Android builds
+- **Visual Studio Build Tools:** Required for Windows Tauri builds
+- **Disk Space:** At least 1 GB for dependencies and build output
 
-**Recommended Requirements**
+Install from GitHub Releases
+----------------------------
 
-- **Python:** 3.11+
-- **Node.js:** 18.0+
-- **RAM:** 1 GB available
-- **Disk Space:** 500 MB for installation and file storage
+Windows Desktop
+~~~~~~~~~~~~~~~
 
-Prerequisites
--------------
+1. Open the latest release on GitHub.
+2. Download ``WifiX-Desktop-Windows-Setup.exe``.
+3. Run the installer.
+4. Open WifiX from the Start menu.
+5. Click **Become Host** to start sharing.
 
-Before installing WifiX, ensure you have the following installed:
+The desktop release starts its packaged backend automatically. Python is not
+required on the target PC when the backend sidecar is bundled correctly.
 
-Python Installation
-~~~~~~~~~~~~~~~~~~~
+Android Mobile
+~~~~~~~~~~~~~~
 
-**Windows:**
+1. Download the Android APK from the release assets.
+2. Install it on the Android device.
+3. Open WifiX Mobile.
+4. Click **Become Host** or **Connect as Client**.
 
-1. Download Python from `python.org <https://www.python.org/downloads/>`_
-2. Run the installer and check "Add Python to PATH"
-3. Verify installation:
-
-.. code-block:: powershell
-
-   python --version
-   # Should output: Python 3.11.x or higher
-
-**macOS:**
-
-.. code-block:: bash
-
-   # Using Homebrew
-   brew install python@3.11
-   
-   # Verify
-   python3 --version
-
-**Linux (Ubuntu/Debian):**
-
-.. code-block:: bash
-
-   sudo apt update
-   sudo apt install python3.11 python3.11-venv python3-pip
-   
-   # Verify
-   python3 --version
-
-Node.js Installation
-~~~~~~~~~~~~~~~~~~~~
-
-**Windows:**
-
-1. Download Node.js from `nodejs.org <https://nodejs.org/>`_
-2. Run the installer (choose LTS version)
-3. Verify:
+For ADB installation:
 
 .. code-block:: powershell
 
-   node --version
-   npm --version
+   adb install -t -r -d WifiX-Mobile-Android-Debug.apk
 
-**macOS:**
+.. important::
 
-.. code-block:: bash
+   Public Android release builds should be signed before distribution. Do not
+   publish an unsigned release APK as the production Android download.
 
-   # Using Homebrew
-   brew install node
-   
-   # Verify
-   node --version
-   npm --version
+Run from Source
+---------------
 
-**Linux:**
-
-.. code-block:: bash
-
-   # Using NodeSource repository
-   curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
-   sudo apt-get install -y nodejs
-   
-   # Verify
-   node --version
-   npm --version
-
-Git Installation
-~~~~~~~~~~~~~~~~
-
-**Windows:**
-
-Download and install from `git-scm.com <https://git-scm.com/download/win>`_
-
-**macOS:**
-
-.. code-block:: bash
-
-   brew install git
-
-**Linux:**
-
-.. code-block:: bash
-
-   sudo apt install git
-
-Installation Steps
-------------------
-
-Step 1: Clone the Repository
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Clone the repository:
 
 .. code-block:: bash
 
    git clone https://github.com/mehmoodulhaq570/WifiX.git
    cd WifiX
 
-Step 2: Backend Setup
-~~~~~~~~~~~~~~~~~~~~~
+Install Python backend dependencies:
 
-Navigate to the backend directory and install dependencies:
+.. code-block:: powershell
 
-.. code-block:: bash
+   python -m pip install -r backend\requirements.txt
 
-   cd backend
-   pip install -r requirements.txt
+Install React dependencies:
 
-**Alternative: Using Virtual Environment (Recommended)**
+.. code-block:: powershell
 
-.. code-block:: bash
+   cd frontend\react
+   npm.cmd install
 
-   # Windows
-   cd backend
-   python -m venv venv
-   venv\Scripts\activate
-   pip install -r requirements.txt
+Run the production-style Python backend during development:
 
-   # macOS/Linux
-   cd backend
-   python3 -m venv venv
-   source venv/bin/activate
-   pip install -r requirements.txt
+.. code-block:: powershell
 
-Step 3: Frontend Setup
-~~~~~~~~~~~~~~~~~~~~~~
+   cd D:\Projects\WifiX
+   python -m waitress --listen=0.0.0.0:5000 --threads=100 backend.production:app
 
-Navigate to the frontend directory and install dependencies:
+Run the frontend in another terminal:
 
-.. code-block:: bash
+.. code-block:: powershell
 
-   cd ../frontend
-   npm install
+   cd D:\Projects\WifiX\frontend\react
+   npm.cmd run dev -- --host 0.0.0.0
 
-Step 4: Configuration
-~~~~~~~~~~~~~~~~~~~~~
+Build Desktop
+-------------
 
-Create a ``.env`` file in the ``backend`` directory:
+Build the Windows desktop installer:
 
-.. code-block:: bash
+.. code-block:: powershell
 
-   # backend/.env
-   FLASK_ENV=development
-   SECRET_KEY=your-secret-key-here
-   ACCESS_PIN=1234
-   CORS_ORIGINS=http://localhost:5173,http://localhost:5174
-   MAX_CONTENT_LENGTH=104857600
+   cd D:\Projects\WifiX\frontend\react
+   npm.cmd run tauri:build
 
-See :doc:`configuration` for detailed configuration options.
-
-Step 5: Verify Installation
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-**Test Backend:**
-
-.. code-block:: bash
-
-   cd backend
-   python app.py
-
-You should see:
+Expected installer output:
 
 .. code-block:: text
 
-   🚀 WifiX Server Starting...
-   📡 Network: 192.168.1.100:5000
-   🔗 Room Code: ABC123
-   ✅ Server running at http://192.168.1.100:5000
+   frontend\react\src-tauri\target\release\bundle\nsis\WifiX_1.0.1_x64-setup.exe
 
-**Test Frontend (in a new terminal):**
+Build Android
+-------------
 
-.. code-block:: bash
+Build the Android debug APK:
 
-   cd frontend
-   npm run dev
+.. code-block:: powershell
 
-You should see:
+   cd D:\Projects\WifiX\frontend\react\mobile
+   npm.cmd run tauri android build -- --debug --apk --target aarch64
+
+Expected APK output:
 
 .. code-block:: text
 
-   VITE v5.0.0  ready in 500 ms
-   ➜  Local:   http://localhost:5173/
-   ➜  Network: http://192.168.1.100:5173/
-
-Step 6: Access WifiX
-~~~~~~~~~~~~~~~~~~~~
-
-Open your browser and navigate to:
-
-- **Local:** ``http://localhost:5173``
-- **Network:** ``http://192.168.1.100:5173``
-
-You should see the WifiX interface! 🎉
+   frontend\react\mobile\src-tauri\gen\android\app\build\outputs\apk\universal\debug\app-universal-debug.apk
 
 Docker Installation (Alternative)
 ----------------------------------

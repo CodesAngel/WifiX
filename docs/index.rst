@@ -1,82 +1,93 @@
 WifiX Documentation
 ===================
 
-.. image:: https://img.shields.io/badge/version-1.0.0-blue.svg
-   :alt: Version 1.0.0
+.. image:: https://img.shields.io/badge/version-1.0.1-blue.svg
+   :alt: Version 1.0.1
 
-.. image:: https://img.shields.io/badge/python-3.8+-brightgreen.svg
-   :alt: Python 3.8+
+.. image:: https://img.shields.io/badge/platform-Windows%20%7C%20Android-informational.svg
+   :alt: Windows and Android
 
 .. image:: https://img.shields.io/badge/license-MIT-green.svg
    :alt: MIT License
 
-**WifiX** is a powerful and user-friendly LAN file sharing application that enables seamless file transfers between devices on the same network. Built with modern web technologies, it combines a robust Flask backend with an intuitive React frontend.
+WifiX is a local-network file sharing application for moving files between
+nearby devices without cloud storage, accounts, or manual USB transfers. A
+device becomes the host, shares a LAN link or QR code, and nearby clients open
+that link to request access and download shared files.
 
-✨ Key Features
----------------
+Current Product Shape
+---------------------
 
-🚀 **Lightning Fast**
-   Share files instantly over your local network without internet dependency
+WifiX is currently maintained in two app targets:
 
-🔒 **Secure by Design**
-   Built-in PIN protection, optional file-level encryption, and secure session management
+.. list-table::
+   :header-rows: 1
+   :widths: 24 38 38
 
-📱 **Cross-Platform**
-   Works on Windows, macOS, Linux - access via web browser from any device
+   * - Target
+     - Backend
+     - Purpose
+   * - Windows desktop
+     - Python backend packaged as a Tauri sidecar
+     - Full desktop app with automatic backend startup
+   * - Android mobile
+     - Rust backend embedded in the Tauri mobile app
+     - Mobile host/client testing and LAN sharing from Android
+   * - Browser client
+     - Connects to the active host over HTTP on the LAN
+     - Opens the WifiX interface from the shared link
 
-🎯 **Zero Configuration**
-   Automatic network discovery with mDNS/Bonjour, no manual IP configuration needed
+Key Capabilities
+----------------
 
-💡 **Smart Room Codes**
-   6-character memorable codes for easy connection sharing
-
-⚡ **Real-Time Updates**
-   WebSocket-powered live notifications for uploads, downloads, and client activity
-
-🎨 **Beautiful Interface**
-   Modern, responsive UI with drag-and-drop support and dark mode
-
-📊 **Progress Tracking**
-   Real-time upload/download progress with speed indicators
+- Host files from the desktop app or Android app on the same local network.
+- Share a direct LAN URL and QR code with nearby devices.
+- Require host approval before clients connect.
+- Upload files with progress feedback.
+- Add optional per-file PIN protection before upload.
+- View shared files from a browser, desktop app, or mobile app.
+- Run the Windows desktop backend automatically when the packaged app starts.
+- Use a native Android build with an embedded Rust backend for mobile hosting.
 
 Quick Start
 -----------
 
-Get WifiX running in under 5 minutes:
+For normal users, install the latest release from GitHub:
 
-.. code-block:: bash
+1. Download the Windows installer, ``WifiX-Desktop-Windows-Setup.exe``.
+2. Install and open WifiX on the host computer.
+3. Click **Become Host**.
+4. Share the displayed LAN link or QR code.
+5. On another device, open the link and click **Connect as Client**.
+6. Approve the request on the host, then share or download files.
 
-   # Clone the repository
-   git clone https://github.com/mehmoodulhaq570/WifiX.git
-   cd WifiX
+For Android testing, install the debug APK from the release assets or with ADB:
 
-   # Install backend dependencies
-   cd backend
-   pip install -r requirements.txt
+.. code-block:: powershell
 
-   # Start the server
-   python app.py
+   adb install -t -r -d WifiX-Mobile-Android-Debug.apk
 
-   # In another terminal, start the frontend
-   cd ../frontend
-   npm install
-   npm run dev
+.. note::
 
-Visit ``http://localhost:5173`` in your browser and start sharing files! 🎉
+   WifiX is designed for trusted local networks. It does not provide a public
+   internet relay by default. Devices must be on the same LAN unless a separate
+   relay/cloud layer is added later.
+
+Documentation Contents
+----------------------
 
 .. toctree::
    :maxdepth: 2
    :caption: Getting Started
-   :hidden:
 
    user-guide/installation
    user-guide/quickstart
+   user-guide/releases
    user-guide/configuration
 
 .. toctree::
    :maxdepth: 2
    :caption: User Guide
-   :hidden:
 
    user-guide/host-workflow
    user-guide/client-workflow
@@ -86,7 +97,6 @@ Visit ``http://localhost:5173`` in your browser and start sharing files! 🎉
 .. toctree::
    :maxdepth: 2
    :caption: API Reference
-   :hidden:
 
    api/rest-api
    api/websocket-events
@@ -96,7 +106,6 @@ Visit ``http://localhost:5173`` in your browser and start sharing files! 🎉
 .. toctree::
    :maxdepth: 2
    :caption: Development
-   :hidden:
 
    development/architecture
    development/contributing
@@ -105,90 +114,23 @@ Visit ``http://localhost:5173`` in your browser and start sharing files! 🎉
 
 .. toctree::
    :maxdepth: 1
-   :caption: Help & Support
-   :hidden:
+   :caption: Help and Reference
 
    troubleshooting
    faq
    changelog
    license
 
-Use Cases
----------
+Repository and Support
+----------------------
 
-🎓 **Education**
-   Teachers can quickly distribute files to students' devices in classroom settings
-
-💼 **Business**
-   Share presentations, documents, and files during meetings without email attachments
-
-👨‍💻 **Development**
-   Transfer builds, logs, and assets between development machines
-
-🏠 **Home Network**
-   Share photos, videos, and files between family devices
-
-📸 **Content Creation**
-   Quick transfer of large media files between editing workstations
-
-Why WifiX?
-----------
-
-Traditional file sharing methods have limitations:
-
-- **Email:** File size restrictions, inbox clutter
-- **Cloud Storage:** Requires internet, privacy concerns, upload/download delays
-- **USB Drives:** Physical access needed, can be lost or infected
-- **Bluetooth:** Slow speeds, pairing hassles
-
-WifiX solves these problems by leveraging your existing local network for fast, secure, direct file transfers.
-
-Technology Stack
-----------------
-
-**Backend**
-
-- **Flask 3.0+** - Lightweight Python web framework
-- **Flask-SocketIO** - Real-time bidirectional communication
-- **Flask-CORS** - Cross-origin resource sharing
-- **Zeroconf** - mDNS/Bonjour service discovery
-- **Flask-Limiter** - Rate limiting and abuse prevention
-
-**Frontend**
-
-- **React 18** - Modern UI component library
-- **Vite** - Next-generation frontend tooling
-- **Socket.IO Client** - Real-time event handling
-- **TailwindCSS** - Utility-first styling (optional)
-
-**Infrastructure**
-
-- **WebSocket** - Real-time bi-directional communication
-- **REST API** - Standard HTTP endpoints
-- **mDNS** - Zero-configuration networking
-
-Community & Support
--------------------
-
-📚 **Documentation:** You're reading it! Comprehensive guides for all features
-
-🐛 **Issue Tracker:** `GitHub Issues <https://github.com/mehmoodulhaq570/WifiX/issues>`_
-
-💬 **Discussions:** `GitHub Discussions <https://github.com/mehmoodulhaq570/WifiX/discussions>`_
-
-⭐ **Star on GitHub:** `mehmoodulhaq570/WifiX <https://github.com/mehmoodulhaq570/WifiX>`_
-
-🤝 **Contributing:** See :doc:`development/contributing` for contribution guidelines
-
-License
--------
-
-WifiX is released under the **MIT License**. See :doc:`license` for details.
-
-Copyright © 2025 mehmoodulhaq570
+- Repository: `github.com/mehmoodulhaq570/WifiX <https://github.com/mehmoodulhaq570/WifiX>`_
+- Issues: `GitHub Issues <https://github.com/mehmoodulhaq570/WifiX/issues>`_
+- Discussions: `GitHub Discussions <https://github.com/mehmoodulhaq570/WifiX/discussions>`_
+- License: :doc:`license`
 
 Indices and Tables
-==================
+------------------
 
 * :ref:`genindex`
 * :ref:`modindex`

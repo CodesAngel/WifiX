@@ -7,10 +7,10 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = 'WifiX'
-copyright = '2025, mehmoodulhaq570'
+copyright = '2026, mehmoodulhaq570'
 author = 'mehmoodulhaq570'
-release = '1.0.0'
-version = '1.0.0'
+release = '1.0.1'
+version = '1.0.1'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -47,7 +47,6 @@ html_static_path = ['_static']
 # Theme options
 html_theme_options = {
     'logo_only': False,
-    'display_version': True,
     'prev_next_buttons_location': 'bottom',
     'style_external_links': False,
     'vcs_pageview_mode': '',
@@ -121,7 +120,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     ('index', 'WifiX', 'WifiX Documentation',
-     author, 'WifiX', 'Seamless LAN File Sharing Application',
+     author, 'WifiX', 'Local network file sharing for desktop and mobile',
      'Miscellaneous'),
 ]
 
