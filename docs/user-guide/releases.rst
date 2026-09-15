@@ -24,6 +24,9 @@ Recommended Release Assets
    * - Signed Android APK or AAB
      - Android production
      - Recommended before public distribution outside testing.
+   * - ``ghcr.io/mehmoodulhaq570/wifix``
+     - Docker
+     - Container image for server-style deployment.
 
 Windows Desktop Release
 -----------------------
@@ -77,6 +80,36 @@ packages:
      "frontend\react\mobile\src-tauri\gen\android\app\build\outputs\apk\universal\debug\app-universal-debug.apk#WifiX-Mobile-Android-Debug.apk" `
      --title "WifiX 1.0.1" `
      --notes "WifiX desktop and Android mobile release with mobile Rust backend, refreshed mobile layout, splash screen, and WifiX app icons."
+
+Publishing the Docker Image
+---------------------------
+
+WifiX includes a GitHub Actions workflow at
+``.github/workflows/docker-publish.yml``. It publishes the Docker image to
+GitHub Container Registry when a release tag is pushed.
+
+Create and push a release tag:
+
+.. code-block:: powershell
+
+   git tag WifiX-1.0.1
+   git push origin WifiX-1.0.1
+
+The workflow publishes:
+
+.. code-block:: text
+
+   ghcr.io/mehmoodulhaq570/wifix:WifiX-1.0.1
+   ghcr.io/mehmoodulhaq570/wifix:latest
+
+Users can run the image with:
+
+.. code-block:: powershell
+
+   docker run --rm -p 5000:5000 ghcr.io/mehmoodulhaq570/wifix:latest
+
+The workflow uses GitHub's built-in ``GITHUB_TOKEN`` with ``packages: write``
+permission, so no personal access token is required for the automated publish.
 
 Release Checklist
 -----------------
