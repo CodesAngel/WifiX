@@ -6,6 +6,7 @@ const FileUploadZone = ({
   onUpload,
   onFileSelect,
   pinProtectionEnabled,
+  pinPrepared = false,
   onTogglePinProtection,
 }) => {
   const [dragActive, setDragActive] = useState(false);
@@ -131,14 +132,31 @@ const FileUploadZone = ({
   return (
     <section
       data-tour="upload-zone"
-      className="xl:col-span-2 bg-white dark:bg-slate-900 rounded-lg shadow-sm dark:shadow-blue-900/20 p-4 sm:p-5 md:p-6 flex flex-col border border-slate-200 dark:border-slate-800 min-w-0"
+      className="lg:col-span-3 bg-white dark:bg-slate-900 rounded-lg shadow-sm dark:shadow-blue-900/20 p-4 sm:p-5 md:p-6 flex flex-col border border-slate-200 dark:border-slate-800 min-w-0"
     >
-      <h2 className="text-lg md:text-xl font-bold text-blue-600 mb-4 border-b pb-2">
-        Upload Files
-      </h2>
+      <div className="mb-4 flex flex-col gap-2 border-b border-slate-200 pb-3 dark:border-slate-700 sm:flex-row sm:items-center sm:justify-between">
+        <h2 className="text-lg md:text-xl font-bold text-blue-600 dark:text-blue-400">
+          Upload Files
+        </h2>
+        <span
+          className={`w-fit rounded-full border px-3 py-1 text-xs font-semibold ${
+            pinProtectionEnabled
+              ? pinPrepared
+                ? "border-green-200 bg-green-50 text-green-700 dark:border-green-900 dark:bg-green-950/40 dark:text-green-300"
+                : "border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-300"
+              : "border-slate-200 bg-slate-50 text-slate-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
+          }`}
+        >
+          {pinProtectionEnabled
+            ? pinPrepared
+              ? "PIN ready"
+              : "PIN needed"
+            : "No PIN"}
+        </span>
+      </div>
 
       {/* Clipboard hint */}
-      <div className="mb-3 text-center">
+      <div className="mb-3 hidden text-center sm:block">
         <p className="text-xs text-slate-500 dark:text-slate-400 flex flex-wrap items-center justify-center gap-2">
           <svg
             className="w-4 h-4"
@@ -170,7 +188,9 @@ const FileUploadZone = ({
         className={`border-2 border-dashed rounded-xl min-h-56 flex-1 flex items-center justify-center p-5 sm:p-8 md:p-10 text-center cursor-pointer transition-all ${
           dragActive
             ? "border-blue-400 bg-blue-50 dark:bg-blue-900"
-            : "border-gray-300"
+            : selectedFiles.length > 0
+            ? "border-green-300 bg-green-50/60 dark:border-green-900 dark:bg-green-950/20"
+            : "border-gray-300 dark:border-slate-700"
         }`}
       >
         <input
@@ -218,31 +238,44 @@ const FileUploadZone = ({
         </div>
       </div>
 
-      <div className="mt-6 space-y-3">
+      <div className="mt-5 space-y-3">
         {/* PIN Protection Toggle */}
-        <div className="flex items-center justify-center gap-2 text-sm flex-wrap">
+        <div className="flex items-center justify-between gap-3 rounded-lg border border-slate-200 bg-slate-50 p-3 text-sm dark:border-slate-700 dark:bg-slate-800">
+          <div className="min-w-0 text-left">
+            <label
+              htmlFor="pinProtection"
+              className="block cursor-pointer select-none text-sm font-semibold text-slate-700 dark:text-slate-200"
+            >
+              PIN Protection
+            </label>
+            <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
+              {pinProtectionEnabled
+                ? pinPrepared
+                  ? "A PIN is set for the next upload."
+                  : "You will set a PIN before upload starts."
+                : "Files upload without a PIN."}
+            </p>
+          </div>
           <input
             type="checkbox"
             id="pinProtection"
             checked={pinProtectionEnabled}
             onChange={onTogglePinProtection}
-            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-slate-800 dark:border-slate-600 cursor-pointer"
+            className="h-5 w-5 shrink-0 cursor-pointer rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-800 dark:focus:ring-blue-600 dark:ring-offset-gray-800"
           />
-          <label
-            htmlFor="pinProtection"
-            className="text-slate-700 dark:text-slate-200 cursor-pointer select-none"
-          >
-            🔒 Enable PIN Protection
-          </label>
         </div>
 
         {/* Upload Button */}
         <div className="flex justify-center">
           <button
             onClick={onUpload}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-2 rounded-md font-semibold transition w-full sm:w-auto"
+            className="min-h-12 bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-md font-semibold transition w-full sm:w-auto"
           >
-            Upload
+            {pinProtectionEnabled && !pinPrepared
+              ? "Set PIN"
+              : pinPrepared
+              ? "Upload with PIN"
+              : "Upload"}
           </button>
         </div>
       </div>

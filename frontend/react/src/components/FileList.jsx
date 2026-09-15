@@ -25,9 +25,14 @@ const FileList = ({
 
   return (
     <section className="w-full bg-white dark:bg-slate-900 rounded-lg shadow-sm dark:shadow-blue-900/20 p-4 sm:p-5 md:p-6 mt-4 md:mt-6 border border-slate-200 dark:border-slate-800 min-w-0">
-      <h2 className="text-lg md:text-xl font-bold text-blue-600 mb-4 border-b pb-2">
-        Available Files
-      </h2>
+      <div className="mb-4 flex items-center justify-between gap-3 border-b border-slate-200 pb-3 dark:border-slate-700">
+        <h2 className="text-lg md:text-xl font-bold text-blue-600 dark:text-blue-400">
+          Available Files
+        </h2>
+        <span className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-semibold text-slate-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
+          {files.length} {files.length === 1 ? "file" : "files"}
+        </span>
+      </div>
 
       {/* status and QR area */}
       <div className="mb-4">
@@ -54,11 +59,11 @@ const FileList = ({
             {Object.entries(uploadingFiles).map(([filename, uploadInfo]) => (
               <div
                 key={`mobile-uploading-${filename}`}
-                className="rounded-lg border border-blue-100 bg-blue-50 dark:border-slate-700 dark:bg-slate-800 p-3"
+                className="rounded-lg border border-blue-100 bg-blue-50 p-3 shadow-sm dark:border-blue-900 dark:bg-blue-950/30"
               >
                 <div className="flex items-start justify-between gap-3">
-                  <span className="font-medium break-all text-sm">{filename}</span>
-                  <span className="font-semibold text-blue-600 text-sm shrink-0">
+                  <span className="font-semibold break-all text-sm text-slate-900 dark:text-white">{filename}</span>
+                  <span className="font-bold text-blue-600 text-sm shrink-0 dark:text-blue-300">
                     {uploadInfo.progress}%
                   </span>
                 </div>
@@ -91,20 +96,17 @@ const FileList = ({
               return (
                 <div
                   key={`mobile-${file.name}`}
-                  className="rounded-lg border border-slate-200 dark:border-slate-700 p-3"
+                  className="rounded-lg border border-slate-200 bg-white p-3 shadow-sm dark:border-slate-700 dark:bg-slate-900"
                 >
-                  <div className="flex items-start gap-2">
-                    {file.has_pin && (
-                      <span
-                        className="text-yellow-600 dark:text-yellow-400 shrink-0"
-                        title="PIN Protected"
-                      >
-                        ðŸ”’
-                      </span>
-                    )}
-                    <span className="font-semibold text-sm break-all min-w-0">
+                  <div className="flex items-start justify-between gap-3">
+                    <span className="font-semibold text-sm break-all min-w-0 text-slate-900 dark:text-white">
                       {file.name}
                     </span>
+                    {file.has_pin && (
+                      <span className="shrink-0 rounded-full bg-amber-100 px-2 py-0.5 text-[11px] font-semibold text-amber-700 dark:bg-amber-950 dark:text-amber-300">
+                        PIN
+                      </span>
+                    )}
                   </div>
                   <div className="mt-2 grid grid-cols-1 gap-1 text-xs text-slate-600 dark:text-slate-300">
                     <span>{(file.size / 1024).toFixed(2)} KB</span>
@@ -114,13 +116,13 @@ const FileList = ({
                   <div className="mt-3 grid grid-cols-2 gap-2">
                     <button
                       onClick={handleDownload}
-                      className="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-md text-sm"
+                      className="min-h-11 bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-md text-sm font-semibold"
                     >
                       Download
                     </button>
                     <button
                       onClick={() => onDelete(file.name)}
-                      className="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-md text-sm"
+                      className="min-h-11 bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-md text-sm font-semibold"
                     >
                       Delete
                     </button>
@@ -250,7 +252,7 @@ const FileList = ({
           </div>
         </>
       ) : (
-        <div className="p-6 text-center text-gray-500">
+        <div className="rounded-lg border border-dashed border-slate-300 bg-slate-50 p-6 text-center text-sm text-gray-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
           No files found in the shared folder.
         </div>
       )}

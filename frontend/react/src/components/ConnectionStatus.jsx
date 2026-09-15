@@ -49,14 +49,14 @@ const ConnectionStatus = ({ isHost, isApproved, statusMsg }) => {
 
   return (
     <div
-      className={`border-l-4 p-4 rounded-lg ${getStatusColor()} flex items-center gap-3 mb-4`}
+      className={`sticky top-0 z-20 border-l-4 p-3 sm:p-4 rounded-lg ${getStatusColor()} flex items-start gap-3 mb-4 shadow-sm md:static`}
     >
-      {getStatusIcon()}
-      <div className="flex-1">
+      <div className="mt-0.5 shrink-0">{getStatusIcon()}</div>
+      <div className="min-w-0 flex-1 text-left">
         <p className="font-semibold text-sm">
           {isHost ? "Hosting" : isApproved ? "Connected" : "Status"}
         </p>
-        <p className="text-xs opacity-90">{statusMsg}</p>
+        <p className="text-xs opacity-90 break-words">{statusMsg}</p>
       </div>
     </div>
   );

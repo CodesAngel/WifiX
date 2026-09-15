@@ -7,6 +7,128 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added - 2026-07-09
+
+- **Mobile Rust Host Backend**:
+
+  - Added shared Rust backend crates for WifiX mobile hosting
+  - Mobile Tauri now starts the Rust HTTP backend automatically inside the app
+  - Added mobile host endpoints for health, device info, file upload/download, QR generation, connection requests, approvals, and file listing
+  - Embedded the built React mobile frontend into the Rust backend so `http://PHONE_IP:5000/` opens the full WifiX interface from a laptop/browser
+
+- **Mobile Browser Client Support**:
+
+  - Browser clients opened from a mobile host link now use the same React interface
+  - Added HTTP-only backend detection so browser clients served by the Rust backend do not try desktop Socket.IO
+  - Client connection requests, host approval polling, and file actions now work from the mobile-hosted browser page
+
+### Changed - 2026-07-09
+
+- **Mobile Build Structure**:
+
+  - Kept the mobile Tauri setup separate from the desktop Tauri/Python backend setup
+  - Added Android/mobile build support without changing the desktop Tauri wrapper
+  - Added rebuild tracking so Rust re-embeds the latest `frontend/react/mobile/dist` output when the mobile frontend changes
+
+- **PIN Upload Flow**:
+
+  - Changed PIN confirmation to prepare the selected file instead of uploading immediately
+  - Upload now starts only when the user clicks **Upload**
+  - Clearing the selected file or disabling PIN protection now clears any prepared upload PIN
+
+### Fixed - 2026-07-09
+
+- **Mobile Share Link 404**:
+
+  - Fixed `http://PHONE_IP:5000/` showing no webpage from the mobile Rust backend
+  - The share link now serves the full WifiX React app and its static assets
+
+- **Mobile Hosted Browser Connection Errors**:
+
+  - Fixed **Become Host** showing Socket.IO errors from the browser-served mobile page
+  - Fixed **Connect as Client** timing out when the browser page was served by the Rust mobile backend
+  - Browser clients now fall back to HTTP connection request endpoints for the mobile Rust backend
+
+- **Mobile PIN Upload Behavior**:
+
+  - Fixed files uploading immediately after setting a PIN
+  - PIN setup no longer sends files until the user confirms by clicking **Upload**
+
+### Added - 2026-07-08
+
+- **Rust Backend Foundation**:
+
+  - Added `wifix-core` for shared file metadata, state, PIN handling, connection requests, and event revision tracking
+  - Added `wifix-server` for the Rust HTTP backend used by the mobile host app
+  - Added Rust routes for uploads, downloads, file deletion, file listing, QR generation, health checks, host info, authentication status, and connection approval flow
+  - Added tests for core state behavior, file operations, PIN verification, connection request handling, and HTTP routes
+
+- **Mobile Tauri Backend Wiring**:
+
+  - Connected the separate mobile Tauri app to the Rust backend
+  - Mobile app now starts the Rust server on `0.0.0.0:5000`
+  - Added graceful backend shutdown when the mobile app closes
+  - Stored mobile uploads under the app data directory
+
+### Changed - 2026-07-08
+
+- **Mobile HTTP Connection Flow**:
+
+  - Added mobile-only frontend behavior so Android uses HTTP routes instead of desktop Socket.IO
+  - Added polling for pending host requests and client approval status
+  - Improved mobile host/client behavior while keeping desktop Python Socket.IO behavior unchanged
+
+- **Android Development Flow**:
+
+  - Configured mobile development to run Vite with `--host 0.0.0.0` so Android devices can reach the dev server
+  - Aligned Tauri JavaScript and Rust package versions for mobile builds
+  - Added guidance-compatible support for emulator and real-device Android testing
+
+### Fixed - 2026-07-08
+
+- **Mobile Backend Reachability**:
+
+  - Fixed Android frontend checks that incorrectly reported `127.0.0.1:5000` as unreachable while the mobile Rust backend was starting
+  - Prevented mobile builds from repeatedly attempting Socket.IO connections against the Rust backend
+  - Fixed mobile client request failures caused by using desktop socket logic on Android
+
+- **Android Build and Dev Issues**:
+
+  - Fixed Tauri package version mismatch between `@tauri-apps/api` and Rust Tauri crates
+  - Fixed Android Vite dev server reachability by exposing the dev server on the LAN interface
+  - Clarified APK selection for emulator versus real phone testing
+
+### Added - 2026-07-07
+
+- **Separate Mobile App Setup**:
+
+  - Added a separate mobile Tauri setup under `frontend/react/mobile`
+  - Kept shared React source available for both desktop and mobile builds
+  - Preserved the existing desktop Tauri/Python backend setup without moving or replacing it
+  - Initialized Android project generation for the mobile Tauri app
+
+- **Android Build Preparation**:
+
+  - Added mobile-specific Android package identity using `com.wifix.mobile`
+  - Prepared mobile build output paths for APK generation and real-device installation
+  - Added generated Android/mobile build output patterns to `.gitignore`
+
+### Changed - 2026-07-07
+
+- **Desktop and Mobile Separation**:
+
+  - Confirmed desktop remains on the Python backend and desktop Tauri wrapper
+  - Set the mobile direction toward a Rust backend so Android can host files natively
+  - Kept mobile work isolated so desktop build commands and desktop sidecar packaging remain unaffected
+
+### Fixed - 2026-07-07
+
+- **Mobile Project Initialization Issues**:
+
+  - Resolved confusion around creating mobile Tauri files beside the existing desktop `src-tauri`
+  - Fixed Android package identifier errors caused by the default `com.tauri.dev` identifier
+  - Fixed generated Android package path mismatch by recreating the Android project after identifier changes
+
 ### Added - 2026-06-23
 
 - **Standalone Desktop Backend Bundle**:

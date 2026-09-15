@@ -24,22 +24,33 @@ const ServerControl = ({
 
   const disableBecomeHost = !isHost && !!isApproved;
   const disableClientConnect = isHost || isConnectingClient;
+  const modeLabel = isHost ? "Host mode" : isApproved ? "Client mode" : "Ready";
+  const modeClass = isHost
+    ? "border-green-200 bg-green-50 text-green-700 dark:border-green-900 dark:bg-green-950/40 dark:text-green-300"
+    : isApproved
+    ? "border-blue-200 bg-blue-50 text-blue-700 dark:border-blue-900 dark:bg-blue-950/40 dark:text-blue-300"
+    : "border-slate-200 bg-slate-50 text-slate-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300";
 
   return (
-    <section className="col-span-1 bg-white dark:bg-slate-900 rounded-lg shadow-sm dark:shadow-blue-900/20 p-4 sm:p-5 md:p-6 flex flex-col items-center text-center border border-slate-200 dark:border-slate-800 min-w-0">
-      <h2 className="text-lg md:text-xl font-bold text-blue-600 dark:text-blue-400 mb-4 border-b dark:border-slate-700 pb-2 w-full">
-        Connection
-      </h2>
+    <section className="col-span-1 lg:col-span-2 bg-white dark:bg-slate-900 rounded-lg shadow-sm dark:shadow-blue-900/20 p-4 sm:p-5 md:p-6 flex flex-col items-center text-center border border-slate-200 dark:border-slate-800 min-w-0">
+      <div className="mb-4 flex w-full items-center justify-between gap-3 border-b border-slate-200 pb-3 dark:border-slate-700">
+        <h2 className="text-lg md:text-xl font-bold text-blue-600 dark:text-blue-400">
+          Connection
+        </h2>
+        <span className={`rounded-full border px-3 py-1 text-xs font-semibold ${modeClass}`}>
+          {modeLabel}
+        </span>
+      </div>
 
       <div className="flex flex-col items-center gap-3 w-full mb-4">
         <div className="bg-slate-50 dark:bg-slate-800 p-3 sm:p-4 rounded-lg w-full border border-blue-100 dark:border-slate-600">
-          <p className="text-sm text-slate-700 dark:text-slate-200 mb-3">
+          <p className="text-sm font-medium text-slate-700 dark:text-slate-200 mb-3">
             Choose your role:
           </p>
           <button
             onClick={isHost ? onStopServer : onStartServer}
             disabled={disableBecomeHost}
-            className={`font-semibold px-6 py-2 rounded-md w-full transition mb-2 ${
+            className={`min-h-12 font-semibold px-6 py-3 rounded-md w-full transition mb-2 ${
               isHost
                 ? "bg-red-600 hover:bg-red-700 text-white"
                 : disableBecomeHost
@@ -57,7 +68,7 @@ const ServerControl = ({
           <button
             onClick={onConnectToHost}
             disabled={disableClientConnect}
-            className={`font-semibold px-6 py-2 rounded-md w-full transition flex items-center justify-center gap-2 min-h-10 ${
+            className={`font-semibold px-6 py-3 rounded-md w-full transition flex items-center justify-center gap-2 min-h-12 ${
               disableClientConnect
                 ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                 : "bg-indigo-500 hover:bg-indigo-600 text-white"
@@ -95,8 +106,8 @@ const ServerControl = ({
         </div>
       </div>
 
-      <div className="w-full bg-slate-50 dark:bg-slate-800 p-4 rounded-lg mb-4">
-        <p className="text-xs text-slate-600 dark:text-slate-300 mb-2">
+      <div className="w-full bg-slate-50 dark:bg-slate-800 p-3 sm:p-4 rounded-lg mb-4">
+        <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-2">
           Share this link:
         </p>
         <div>
@@ -104,7 +115,7 @@ const ServerControl = ({
             type="text"
             value={shareUrl}
             readOnly
-            className="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-md text-slate-700 dark:text-slate-200"
+            className="w-full px-3 py-3 text-sm bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-md text-slate-700 dark:text-slate-200"
           />
         </div>
         <div className="mt-2 flex w-full flex-col sm:flex-row justify-center gap-2">
@@ -173,7 +184,7 @@ const ServerControl = ({
       </div>
 
       <div className="flex flex-col items-center gap-2 w-full">
-        <p className="text-slate-600 dark:text-slate-200 text-sm">
+        <p className="text-slate-600 dark:text-slate-200 text-sm break-all">
           <strong>LAN IP:</strong> {deviceInfo.lan_ip || deviceInfo.ip}
         </p>
         <div className="flex flex-col items-center gap-3 mt-2 w-full">

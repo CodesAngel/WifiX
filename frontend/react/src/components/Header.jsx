@@ -71,7 +71,7 @@ const Header = ({ files = [], uploadingFiles = {} }) => {
 
   return (
     <>
-      <header className="relative w-full bg-gradient-to-r from-blue-600 to-cyan-500 px-4 py-6 sm:py-8 text-center text-white shadow-lg rounded-b-2xl md:rounded-b-3xl">
+      <header className="relative w-full bg-gradient-to-r from-blue-600 to-cyan-500 px-4 py-5 sm:py-7 md:py-8 text-center text-white shadow-lg rounded-b-2xl md:rounded-b-3xl">
         {/* Three-dot menu (top-right) */}
         <div ref={menuRef} className="absolute top-3 right-4">
           <div className="relative">
@@ -225,8 +225,8 @@ const Header = ({ files = [], uploadingFiles = {} }) => {
           </div>
         </div>
 
-        <div className="max-w-3xl mx-auto pr-10 sm:pr-0">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">
+        <div className="max-w-3xl mx-auto px-8 sm:px-0">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-1 sm:mb-2">
             WifiX Transfer
           </h1>
           <p className="opacity-90 text-sm md:text-base">

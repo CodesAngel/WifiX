@@ -705,7 +705,7 @@ function App() {
       <Header files={files} uploadingFiles={uploadingFiles} />
 
       <main className="transition-colors duration-300 bg-slate-50 dark:bg-slate-950 text-gray-900 dark:text-white font-sans min-h-screen w-full">
-        <div className="w-full max-w-[1600px] mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-4 md:py-6">
+        <div className="w-full max-w-[1600px] mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-3 sm:py-4 md:py-6">
           <div className="w-full min-w-0">
             {/* Connection Status Banner */}
             <ConnectionStatus
@@ -713,7 +713,7 @@ function App() {
               isApproved={isApproved}
               statusMsg={statusMsg}
             />
-            <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 md:gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 md:gap-5 xl:gap-6 items-start">
               <ServerControl
                 isHost={isHost}
                 isApproved={isApproved}
@@ -741,6 +741,7 @@ function App() {
                   }
                 }}
                 pinProtectionEnabled={pinProtectionEnabled}
+                pinPrepared={pinProtectionEnabled && !!selectedUploadPin}
                 onTogglePinProtection={() => {
                   const nextEnabled = !pinProtectionEnabled;
                   setPinProtectionEnabled(nextEnabled);
