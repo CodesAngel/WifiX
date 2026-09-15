@@ -1,7 +1,7 @@
 # Multi-stage build for WifiX production deployment
 
 # Stage 1: Build frontend
-FROM node:18-alpine AS frontend-builder
+FROM node:22-alpine AS frontend-builder
 
 WORKDIR /app/frontend
 
@@ -53,7 +53,8 @@ RUN mkdir -p backend/uploads && \
     chmod 755 backend/uploads
 
 # Create non-root user for security
-RUN useradd -m -u 1000 wifix && \
+RUN addgroup -S wifix && \
+    adduser -S -D -H -u 1000 -G wifix wifix && \
     chown -R wifix:wifix /app
 
 # Switch to non-root user
