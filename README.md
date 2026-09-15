@@ -1,109 +1,108 @@
-<div align="center">
-
-# 📡 WifiX
+# WifiX
 
 **Easy LAN File Sharing Made Simple**
 
 [![Python](https://img.shields.io/badge/Python-3.8%2B-blue.svg)](https://www.python.org/)
-[![React](https://img.shields.io/badge/React-19-61DAFB.svg)](https://react.dev/)
-[![Flask](https://img.shields.io/badge/Flask-2.3.2-000000.svg)](https://flask.palletsprojects.com/)
+[![Rust](https://img.shields.io/badge/Rust-Mobile%20Backend-orange.svg)](https://www.rust-lang.org/)
+[![Tauri](https://img.shields.io/badge/Tauri-Desktop%20%26%20Android-24C8DB.svg)](https://tauri.app/)
+[![Docker](https://img.shields.io/badge/Docker-GHCR-2496ED.svg)](https://github.com/CodesAngel/WifiX/pkgs/container/wifix)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-Share files seamlessly across your local network with drag-and-drop simplicity, QR code access, and real-time updates.
+WifiX is a local network file sharing app for moving files between nearby
+devices without cloud storage, accounts, or manual USB transfers. A device can
+become the host, share a LAN link or QR code, and approve clients before they
+download or upload files.
 
-[Features](#-features) • [Quick Start](#-quick-start) • [Documentation](https://mehmoodulhaq570.github.io/WifiX/) • [Contributing](#-contributing)
+The project currently supports a Windows desktop app, an Android mobile app,
+and a Docker/server-style deployment.
 
-</div>
+[Documentation](https://codesangel.github.io/WifiX/) | [Changelog](CHANGELOG.md) | [Security](SECURITY.md) | [Contributing](CONTRIBUTING.md)
 
----
+## Highlights
 
-## ✨ Features
+- Host/client workflow with explicit host approval.
+- Drag-and-drop upload and direct download from connected devices.
+- Shareable LAN URL and QR code access.
+- Optional global PIN and per-file PIN protection.
+- PIN-protected uploads wait for the explicit Upload action.
+- Responsive React interface for desktop, mobile, tablet, and browser clients.
+- Windows desktop app with an auto-starting packaged Python backend sidecar.
+- Android mobile app with an embedded Rust backend for mobile hosting.
+- Docker image publishing through GitHub Actions and GitHub Container Registry.
 
-### Core Functionality
+## Supported Platforms
 
-- 📁 **Drag & Drop Uploads** - Intuitive file upload with progress tracking
-- ⬇️ **Instant Downloads** - Quick file retrieval from any connected device
-- 📱 **QR Code Access** - Scan to connect from mobile devices instantly
-- 🔄 **Real-Time Sync** - WebSocket-powered live updates across all clients
+| Platform | Status | Backend |
+| --- | --- | --- |
+| Windows desktop | Supported through Tauri installer | Python Flask sidecar |
+| Android mobile | Supported through Tauri Android APK | Embedded Rust HTTP backend |
+| Browser on LAN | Supported as a client or host page | Connects to the active host backend |
+| Docker | Supported for server-style deployment | Python Flask/Gunicorn |
 
-### Security & Control
+WifiX is designed for trusted local networks. Host and client devices should be
+on the same Wi-Fi or LAN unless you add a separate relay/cloud layer.
 
-- 🔐 **Host/Client Approval** - Host authorizes all client connections
-- 🔑 **PIN Protection** - Global and per-file PIN authentication
-- 🔒 **Secure Filenames** - Automatic sanitization prevents path traversal
-- 🛡️ **Rate Limiting** - Built-in protection against abuse
-- 🔍 **Zeroconf Discovery** - Auto-discover WifiX servers on local network (mDNS/Bonjour)
+## Quick Start From Source
 
-### User Experience
+### Requirements
 
-- 🌙 **Dark Mode** - Toggle between light and dark themes
-- 🗑️ **Safe Deletion** - Confirmation modals prevent accidental removals
-- 📈 **Upload Progress** - Real-time feedback during file transfers
-- 💾 **File Persistence** - Files remain until explicitly deleted
+- Python 3.8 or newer
+- Node.js 18 or newer
+- npm
+- Rust stable toolchain for Tauri builds
+- Visual Studio Build Tools with Desktop development with C++ for Windows builds
+- Android Studio, Android SDK, and NDK for Android builds
 
-## 🚀 Quick Start
-
-### Prerequisites
-
-- Python 3.8 or higher
-- Node.js 16 or higher
-- npm or yarn
-
-### Installation
+### Install Dependencies
 
 ```powershell
-# Clone repository
-git clone https://github.com/yourusername/WifiX.git
+git clone https://github.com/CodesAngel/WifiX.git
 cd WifiX
 
-# Backend setup
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
-pip install -r backend/requirements.txt
+python -m pip install -r backend\requirements.txt
 
-# Frontend setup
 cd frontend\react
-npm install
+npm.cmd install
 ```
 
-### Running the Application
+### Run Desktop/Web Development
 
-**Terminal 1 - Backend:**
+Terminal 1, from the repository root:
 
 ```powershell
-python backend/app.py
-# Server runs on http://localhost:5000
+python -m waitress --listen=0.0.0.0:5000 --threads=100 backend.production:app
 ```
 
-**Terminal 2 - Frontend:**
+Terminal 2:
 
 ```powershell
-cd frontend\react
-npm run dev
-# Development server on http://localhost:5173
+cd D:\Projects\WifiX\frontend\react
+npm.cmd run dev -- --host 0.0.0.0
 ```
 
-### Access
+Open:
 
-- **Host Dashboard:** `http://localhost:5173`
-- **Client Access:** Scan QR code or use displayed IP address
-- **Mobile:** Scan QR code from any mobile device on same network
+```text
+http://localhost:5173
+```
 
-### Production Deployment
+Use the displayed LAN link or QR code from another device on the same network.
 
-**🖥️ Desktop App (Recommended for Personal Use):**
+## Build Windows Desktop App
 
-WifiX can be packaged as a standalone Windows desktop application using
-**Tauri** with a bundled PyInstaller backend sidecar:
+The desktop app is built from `frontend/react/src-tauri`. It uses the shared
+React frontend and starts the packaged Python backend automatically.
+
+Build the backend sidecar first:
 
 ```powershell
-# 1. Build the React frontend
-cd frontend\react
-npm.cmd run build
+cd D:\Projects\WifiX
 
-# 2. Build the backend sidecar exe
-cd ..\..
+npm.cmd --prefix frontend\react run build
+
 $frontendDist = (Resolve-Path "frontend\react\dist").Path
 python -m PyInstaller `
   --noconfirm `
@@ -121,514 +120,197 @@ python -m PyInstaller `
   --exclude-module tkinter `
   --add-data "$frontendDist;frontend\react\dist" `
   backend\run_backend.py
+```
 
-# 3. Build the Windows desktop installer
-cd frontend\react
+Then build the desktop installer:
+
+```powershell
+cd D:\Projects\WifiX\frontend\react
 npm.cmd run tauri:build
 ```
 
-The NSIS installer is generated at:
+Expected installer output:
 
 ```text
 frontend\react\src-tauri\target\release\bundle\nsis\WifiX_1.0.1_x64-setup.exe
 ```
 
-📱 **Benefits:**
+## Build Android App
 
-- ✅ Windows desktop installer
-- ✅ No hosting costs
-- ✅ Bundled backend auto-starts with the app
-- ✅ No Python install required on the target PC
-- ✅ No internet required
-- ✅ Users just download and run
-- ✅ Share links open the packaged WifiX web UI on the LAN
+The Android app is built from `frontend/react/mobile`. It uses the shared React
+UI and starts the Rust backend from the mobile Tauri app.
 
-Generated build outputs are intentionally ignored by Git:
+```powershell
+cd D:\Projects\WifiX\frontend\react\mobile
+npm.cmd run tauri android build -- --debug --apk --target aarch64
+```
+
+Expected debug APK:
 
 ```text
-build/
-dist/
-frontend/react/dist/
-frontend/react/src-tauri/target/
+frontend\react\mobile\src-tauri\gen\android\app\build\outputs\apk\universal\debug\app-universal-debug.apk
 ```
 
-📖 **Desktop app guide:** [TAURI_DESKTOP_APP.md](TAURI_DESKTOP_APP.md)
+Install on a USB-connected Android device:
 
----
+```powershell
+& "$env:LOCALAPPDATA\Android\Sdk\platform-tools\adb.exe" devices
+& "$env:LOCALAPPDATA\Android\Sdk\platform-tools\adb.exe" install -r "D:\Projects\WifiX\frontend\react\mobile\src-tauri\gen\android\app\build\outputs\apk\universal\debug\app-universal-debug.apk"
+```
 
-**☁️ Cloud Deployment (For Public Access):**
+If `adb devices` shows `unauthorized`, unlock the phone and accept the USB
+debugging prompt.
 
-For production deployment with Docker, systemd, HTTPS, and more, see **[DEPLOYMENT.md](DEPLOYMENT.md)**.
+## Docker
 
-**Quick production options:**
+Run WifiX with Docker Compose:
 
-```bash
-# Docker deployment
+```powershell
 docker-compose up -d
-
-# Linux systemd service
-sudo systemctl start wifix
-
-# Windows production server
-# From the project root:
-python -m waitress --listen=0.0.0.0:5000 --threads=100 backend.production:app
-
-# Or, if your terminal is already inside the backend folder:
-python -m waitress --listen=0.0.0.0:5000 --threads=100 production:app
-
-# Linux production server (Gunicorn)
-gunicorn -w 1 --threads 100 --bind 0.0.0.0:5000 backend.production:app
 ```
 
-On Windows/Waitress, the frontend defaults Socket.IO to HTTP polling because
-Waitress does not support WebSocket upgrades. On Linux with a WebSocket-capable
-server, set `VITE_SOCKET_TRANSPORTS=websocket,polling` before building the
-frontend if you want WebSocket upgrades.
+Or run the published image from GitHub Container Registry:
 
-📖 **Full deployment guide:** [DEPLOYMENT.md](DEPLOYMENT.md) - Covers Docker, nginx, HTTPS, Zeroconf, monitoring, and more.
+```powershell
+docker run --rm -p 5000:5000 ghcr.io/codesangel/wifix:latest
+```
 
-## 🛠️ Tech Stack
+The Docker image is published by `.github/workflows/docker-publish.yml` when a
+tag matching `WifiX-*` is pushed.
 
-| Layer             | Technology             | Purpose                   |
-| ----------------- | ---------------------- | ------------------------- |
-| **Backend**       | Flask 2.3.2            | Web framework             |
-|                   | Flask-SocketIO         | WebSocket support         |
-|                   | Flask-Limiter          | Rate limiting             |
-|                   | Zeroconf               | Network service discovery |
-|                   | Werkzeug               | Security utilities        |
-| **Frontend**      | React 19               | UI framework              |
-|                   | Vite                   | Build tool & dev server   |
-|                   | Tailwind CSS + DaisyUI | Styling                   |
-|                   | Socket.IO Client       | Real-time communication   |
-| **Communication** | WebSocket              | Live updates              |
-|                   | REST API               | File operations           |
+```powershell
+git tag WifiX-1.0.6
+git push origin WifiX-1.0.6
+```
 
 ## Project Structure
 
-```
+```text
 WifiX/
-├── backend/
-│   ├── app.py                      # Flask backend server
-│   └── requirements.txt            # Python dependencies for backend
-├── backend/uploads/                # File storage directory
+├── backend/                         Python backend for desktop and Docker
+│   ├── app.py                       Flask app and development entry point
+│   ├── production.py                Production import path
+│   ├── run_backend.py               Desktop sidecar launcher
+│   └── requirements.txt
+├── crates/
+│   ├── wifix-core/                  Shared Rust backend domain logic
+│   └── wifix-server/                Rust HTTP server used by mobile
 ├── frontend/
 │   └── react/
-│       ├── src/
-│       │   ├── components/         # React components
-│       │   │   ├── Header.jsx
-│       │   │   ├── ServerControl.jsx
-│       │   │   ├── FileUploadZone.jsx
-│       │   │   ├── FileList.jsx
-│       │   │   ├── DeleteModal.jsx
-│       │   │   ├── ConnectionApprovalModal.jsx
-│       │   │   ├── ConnectionStatus.jsx
-│       │   │   ├── UploadErrorModal.jsx
-│       │   │   ├── DarkModeToggle.jsx
-│       │   │   └── Footer.jsx
-│       │   ├── hooks/              # Custom React hooks
-│       │   │   ├── useSocket.js
-│       │   │   ├── useFileUpload.js
-│       │   │   └── useAuth.js
-│       │   ├── utils/              # Utility functions
-│       │   │   ├── api.js
-│       │   │   └── constants.js
-│       │   ├── App.jsx             # Main React component
-│       │   └── main.jsx            # React entry point
-│       ├── .env                    # Environment variables
-│       ├── package.json            # Node dependencies
-│       └── vite.config.js          # Vite configuration
-└── README.md
+│       ├── src/                     Shared React UI
+│       ├── src-tauri/               Windows desktop Tauri wrapper
+│       └── mobile/
+│           ├── src/                 Mobile frontend entry
+│           └── src-tauri/           Android/mobile Tauri wrapper
+├── docs/                            Sphinx documentation
+├── Dockerfile
+├── docker-compose.yml
+└── CHANGELOG.md
 ```
 
-## Setup Instructions
+## Architecture
 
-### Backend Setup
+WifiX keeps the user workflow consistent while allowing each platform to use
+the backend that fits it best.
 
-1. **Create and activate Python virtual environment**:
+The Windows desktop app packages the Python Flask backend as a hidden sidecar.
+When the desktop app starts, Tauri launches the backend, the React UI connects
+to `127.0.0.1:5000`, and nearby clients use the host machine LAN IP.
 
-   ```powershell
-   cd D:\Projects\WifiX
-   python -m venv .venv
-   .\.venv\Scripts\Activate.ps1
-   ```
+The Android app embeds a Rust backend inside the Tauri mobile app. It serves
+the same core workflow through HTTP endpoints and can host files directly from
+the phone. Browser clients can open the phone's LAN link and use the WifiX UI.
 
-2. **Install Python dependencies**:
+The Docker build uses the Python backend and the production React build for
+server-style deployments.
 
-   ```powershell
-   pip install -r backend/requirements.txt
-   ```
+## Common Commands
 
-3. **Configure environment variables** (optional):
+| Task | Command |
+| --- | --- |
+| Install frontend dependencies | `cd frontend\react && npm.cmd install` |
+| Run React dev server | `npm.cmd run dev -- --host 0.0.0.0` |
+| Build React frontend | `npm.cmd run build` |
+| Build desktop installer | `npm.cmd run tauri:build` |
+| Run mobile dev app | `cd frontend\react\mobile && npm.cmd run tauri android dev` |
+| Build Android debug APK | `npm.cmd run tauri android build -- --debug --apk --target aarch64` |
+| Build docs | `cd docs && python -m sphinx -b html . _build\html` |
+| Run Docker Compose | `docker-compose up -d` |
 
-   ```powershell
-   # Create a .env file or set environment variables
-   $env:ACCESS_PIN = "1234"              # Enable PIN authentication
-   $env:CORS_ORIGINS = "http://localhost:5173,http://localhost:5174"
-   $env:FILE_TTL_SECONDS = "0"           # 0 = files persist until deleted
-   $env:SECRET_KEY = "your-secret-key"   # Session encryption key
-   ```
+## Configuration
 
-4. **Run the Flask backend**:
-   ```powershell
-   python backend/app.py
-   ```
-   Backend will start on `http://localhost:5000`
+Backend settings can be provided through environment variables or a backend
+`.env` file.
 
-Note: uploaded files are now stored in `backend/uploads/`. During the migration the original top-level `uploads/` directory was copied and the original was renamed to `uploads_backup_20251111154617/` in the repo root as a safety backup — delete it only after you verify everything is present.
-
-### Frontend Setup
-
-1. **Navigate to frontend directory**:
-
-   ```powershell
-   cd frontend\react
-   ```
-
-2. **Install Node dependencies**:
-
-   ```powershell
-   npm install
-   ```
-
-3. **Configure environment variables**:
-   Create or edit `.env` file:
-
-   ```
-   VITE_API_URL=http://localhost:5000
-   ```
-
-4. **Run the Vite dev server**:
-   ```powershell
-   npm run dev
-   ```
-   Frontend will start on `http://localhost:5173` (or 5174 if 5173 is in use).
-
-## 📖 Documentation
-
-Comprehensive documentation is available in the `docs/` folder:
-
-- **[Features Guide](docs/FEATURES.md)** - Detailed feature documentation
-- **[Usage Guide](docs/USAGE.md)** - How to use WifiX
-- **[API Documentation](docs/API.md)** - REST & WebSocket API reference
-- **[Architecture](docs/ARCHITECTURE.md)** - System design and architecture
-- **[Troubleshooting](docs/TROUBLESHOOTING.md)** - Common issues and solutions
-- **[Contributing Guide](CONTRIBUTING.md)** - How to contribute
-- **[Changelog](CHANGELOG.md)** - Version history
-- **[Security Policy](SECURITY.md)** - Security guidelines
-
-## 📋 Project Structure
-
-```
-WifiX/
-├── backend/
-│   ├── app.py                   # Flask application
-│   ├── requirements.txt         # Python dependencies
-│   └── uploads/                 # File storage (gitignored)
-├── frontend/
-│   └── react/
-│       ├── src/
-│       │   ├── components/      # React components
-│       │   ├── hooks/           # Custom hooks
-│       │   ├── utils/           # Utility functions
-│       │   ├── App.jsx          # Main app component
-│       │   └── main.jsx         # Entry point
-│       ├── package.json         # Node dependencies
-│       └── vite.config.js       # Vite configuration
-├── docs/                        # Documentation
-│   ├── INDEX.md                 # Documentation index
-│   ├── ARCHITECTURE.md          # System architecture
-│   ├── TROUBLESHOOTING.md       # Problem solving
-│   └── USAGE.md                 # Usage guide
-├── CONTRIBUTING.md              # Contribution guidelines
-├── CHANGELOG.md                 # Version history
-├── SECURITY.md                  # Security policies
-├── API.md                       # API documentation
-├── LICENSE                      # MIT License
-└── README.md                    # This file
+```env
+ACCESS_PIN=1234
+SECRET_KEY=change-this-secret
+CORS_ORIGINS=http://localhost:5173
+FILE_TTL_SECONDS=0
+CLEANUP_INTERVAL_SECONDS=60
 ```
 
-## ⚙️ Configuration
+Frontend development can use:
 
-### Environment Variables
-
-**Backend (`backend/.env` or system):**
-
-```bash
-ACCESS_PIN=1234                    # Optional: Enable PIN authentication
-SECRET_KEY=your-secret-key-here    # Session encryption (auto-generated if not set)
-CORS_ORIGINS=http://localhost:5173 # Allowed origins (comma-separated)
-FILE_TTL_SECONDS=0                 # File auto-cleanup (0=disabled)
-CLEANUP_INTERVAL_SECONDS=60        # Cleanup check interval
+```env
+VITE_API_URL=http://localhost:5000
 ```
 
-**Frontend (`frontend/react/.env`):**
+For packaged desktop and mobile builds, the app uses platform-aware backend
+detection so LAN/browser links do not depend on the Vite development server.
 
-```bash
-VITE_API_URL=http://localhost:5000  # Backend API URL
-```
+## Release Assets
 
-### File Upload Limits
+Recommended GitHub Release assets:
 
-Modify in `backend/app.py`:
+| Asset | Platform |
+| --- | --- |
+| `WifiX-Desktop-Windows-Setup.exe` | Windows x64 |
+| `WifiX-Mobile-Android-Debug.apk` | Android testing |
+| Signed APK or AAB | Android production |
+| `ghcr.io/codesangel/wifix:<tag>` | Docker |
 
-```python
-app.config['MAX_CONTENT_LENGTH'] = 1024 * 1024 * 1024  # 1GB default
-```
+See [docs/user-guide/releases.rst](docs/user-guide/releases.rst) for the full
+release checklist.
 
-## 🔒 Security
+## Security Notes
 
-WifiX includes multiple security layers:
+- Use WifiX on trusted local networks.
+- Keep host approval enabled when accepting client connections.
+- Use PIN protection when sharing sensitive files.
+- Do not expose the LAN server directly to the public internet without HTTPS,
+  stronger authentication, and network hardening.
+- Report vulnerabilities through [SECURITY.md](SECURITY.md).
 
-- **Host Approval** - All client connections require host authorization
-- **PIN Authentication** - Optional global and per-file PIN protection
-- **Rate Limiting** - Prevents abuse (10 uploads/min, 20 deletes/min)
-- **Secure Filenames** - Automatic sanitization prevents path traversal
-- **Session Management** - Secure, HTTP-only cookies
-- **CORS Protection** - Configurable origin restrictions
+## Documentation
 
-For security issues, see [SECURITY.md](SECURITY.md).
-
-## 📊 API Reference
-
-### REST Endpoints
-
-| Method   | Endpoint                   | Description    | Rate Limit |
-| -------- | -------------------------- | -------------- | ---------- |
-| `GET`    | `/api/files`               | List all files | -          |
-| `POST`   | `/api/upload`              | Upload file    | 10/min     |
-| `DELETE` | `/api/delete/<filename>`   | Delete file    | 20/min     |
-| `GET`    | `/api/download/<filename>` | Download file  | -          |
-| `GET`    | `/api/info`                | Server info    | -          |
-
-### WebSocket Events
-
-**Client → Server:**
-
-- `become_host` - Register as host
-- `stop_host` - Stop hosting
-- `request_connect` - Request connection
-- `approve_request` - Approve client (host only)
-- `deny_request` - Deny client (host only)
-
-**Server → Client:**
-
-- `file_uploaded` - New file available
-- `file_deleted` - File removed
-- `incoming_request` - Connection request (host)
-- `request_approved` - Connection approved
-- `request_denied` - Connection denied
-
-See [API.md](API.md) for complete documentation.
-
-## 🛠️ Development
-
-### Prerequisites
-
-- Python 3.8+
-- Node.js 16+
-- Git
-
-### Setup Development Environment
+The full documentation is in `docs/` and can be built locally:
 
 ```powershell
-# Clone repository
-git clone https://github.com/yourusername/WifiX.git
-cd WifiX
-
-# Backend
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-pip install -r backend/requirements.txt
-
-# Frontend
-cd frontend\react
-npm install
+cd docs
+python -m sphinx -b html . _build\html
 ```
 
-### Running Development Servers
+Useful pages:
 
-**Terminal 1 - Backend (with auto-reload):**
-
-```powershell
-$env:FLASK_ENV="development"
-python backend/app.py
-```
-
-**Terminal 2 - Frontend (with HMR):**
-
-```powershell
-cd frontend\react
-npm run dev
-```
-
-### Building for Production
-
-```powershell
-cd frontend\react
-npm run build
-# Build output in dist/ folder
-```
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
-npm run build
-npm run preview # Preview production build
-
-````
-
-### Lint Frontend Code
-
-```powershell
-cd frontend\react
-npm run lint
-````
-
-## Improvements Implemented
-
-- ✅ Environment-based CORS configuration
-- ✅ Comprehensive logging system
-- ✅ Enhanced error handling with user feedback
-- ✅ Rate limiting on critical endpoints
-- ✅ File size validation (100MB limit)
-- ✅ Modular component architecture
-- ✅ Custom React hooks for reusability
-- ✅ Constants file for configuration
-- ✅ Improved error messages
-- ✅ Delete confirmation modal
-- ✅ Upload progress tracking
-- ✅ File persistence (no auto-cleanup by default)
-
-## Future Enhancements
-
-- [ ] TypeScript migration for better type safety
-- [ ] Unit tests (pytest for backend, vitest for frontend)
-- [ ] Docker support for easy deployment
-- [ ] HTTPS support for production
-- [ ] Toast notifications (react-hot-toast)
-- [ ] Virtual scrolling for large file lists
-- [ ] File search and filtering
-- [ ] Multi-file upload
-- [ ] Folder support
-- [ ] Download all as ZIP
-
-## 🐛 Troubleshooting
-
-For detailed troubleshooting, see [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md).
-
-### Common Issues
-
-**Port Already in Use:**
-
-- Vite auto-selects next available port (5174, 5175...)
-- Update `CORS_ORIGINS` in backend if needed
-
-**Socket.IO Connection Errors:**
-
-- Ensure `CORS_ORIGINS` includes frontend dev server URL
-- Check firewall/antivirus settings
-- Verify backend is running
-
-**Upload Failures:**
-
-- Check file size limit (1GB default)
-- Verify rate limits (10 uploads/min)
-- Check backend logs for errors
-
-**Files Not Showing:**
-
-- Verify PIN authentication (if enabled)
-- Check host approval (if client)
-- Refresh browser or reconnect
-
-## 🤝 Contributing
-
-We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for:
-
-- Code of Conduct
-- Development setup
-- Coding standards
-- Pull request process
-- Issue guidelines
-
-Quick contribution steps:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit changes (`git commit -m 'Add AmazingFeature'`)
-4. Push to branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🗺️ Roadmap
-
-### Version 1.0.0 (Current)
-
-- ✅ Core file sharing functionality
-- ✅ Host/Client approval system
-- ✅ PIN authentication
-- ✅ QR code generation
-- ✅ Real-time updates via WebSocket
-- ✅ Dark mode support
-- ✅ Rate limiting
-
-### Version 1.1.0 (Planned)
-
-- [x] Docker support (see [DEPLOYMENT.md](DEPLOYMENT.md))
-- [x] Zeroconf/mDNS auto-discovery
-- [ ] Database integration (SQLite/PostgreSQL)
-- [ ] File search and filtering
-- [ ] Batch file operations
-- [ ] Enhanced mobile UI
-
-### Future Versions
-
-- [ ] TypeScript migration
-- [ ] Unit and integration tests
-- [ ] Folder upload/download
-- [ ] ZIP archive creation
-- [ ] HTTPS/SSL by default
-- [ ] Multi-language support
-- [ ] Room codes for easy connections
-
-See [CHANGELOG.md](CHANGELOG.md) for version history and [GitHub Issues](https://github.com/mehmoodulhaq570/WifiX/issues) for tracking.
-
-## 🙏 Acknowledgments
-
-Built with amazing open-source tools:
-
-- [Flask](https://flask.palletsprojects.com/) - Web framework
-- [React](https://react.dev/) - UI library
-- [Vite](https://vitejs.dev/) - Build tool
-- [Tailwind CSS](https://tailwindcss.com/) - Styling framework
-- [DaisyUI](https://daisyui.com/) - Component library
-- [Socket.IO](https://socket.io/) - Real-time communication
-- [Lucide](https://lucide.dev/) - Icon library
-
-## 📞 Support & Community
-
-- 📚 **Documentation:** Browse [GitHub Pages](https://mehmoodulhaq570.github.io/WifiX/)
-- 🐛 **Issues:** Report bugs on [GitHub Issues](https://github.com/mehmoodulhaq570/WifiX/issues)
-- 💬 **Discussions:** Join [GitHub Discussions](https://github.com/mehmoodulhaq570/WifiX/discussions)
-- 🔒 **Security:** Report vulnerabilities via [SECURITY.md](SECURITY.md)
-
----
-
-<div align="center">
-
-**Made with ❤️ for easy local file sharing**
-
-If you find WifiX useful, please ⭐ star this repository!
-
-[Report Bug](https://github.com/mehmoodulhaq570/WifiX/issues) · [Request Feature](https://github.com/mehmoodulhaq570/WifiX/issues) · [Documentation](https://mehmoodulhaq570.github.io/WifiX/)
-
-</div>
+- [Installation Guide](docs/user-guide/installation.rst)
+- [Quick Start](docs/user-guide/quickstart.rst)
+- [Release Downloads](docs/user-guide/releases.rst)
+- [Architecture](docs/development/architecture.rst)
+- [Troubleshooting](docs/troubleshooting.rst)
 
 ## Contributing
 
-Contributions are welcome! Please open an issue or submit a pull request.
+Contributions are welcome. Please read [CONTRIBUTING.md](CONTRIBUTING.md)
+before opening a pull request.
 
----
+For code changes:
 
-**Note**: This application is designed for trusted local networks. For production use on untrusted networks, implement additional security measures (HTTPS, stronger authentication, network isolation, etc.).
+1. Create a feature branch.
+2. Keep desktop and mobile Tauri changes in their own folders.
+3. Run the relevant build or test command.
+4. Update docs and `CHANGELOG.md` when behavior changes.
+
+## License
+
+WifiX is released under the MIT License. See [LICENSE](LICENSE) for details.

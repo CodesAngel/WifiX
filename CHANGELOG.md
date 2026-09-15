@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed - 2026-09-15
+
+- **Project README**:
+
+  - Rewrote the root README with a professional overview, supported platforms, build commands, Docker usage, architecture notes, release assets, and security guidance
+  - Removed duplicated and outdated README sections, including old repository links and obsolete setup guidance
+
 ### Fixed - 2026-09-15
 
 - **Docker Image Build**:
