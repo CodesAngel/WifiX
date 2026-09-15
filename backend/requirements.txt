@@ -2,7 +2,7 @@ Flask==2.3.2
 Flask-SocketIO==5.3.4
 python-dotenv==1.0.0
 qrcode==7.4
-zeroconf==0.42.0
+zeroconf==0.43.0
 python-socketio==5.9.0
 simple-websocket==1.1.0
 Flask-Limiter
