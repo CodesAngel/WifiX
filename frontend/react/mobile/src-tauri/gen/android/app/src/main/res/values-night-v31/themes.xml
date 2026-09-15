@@ -1,9 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
     <style name="Theme.wifix_mobile" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:windowBackground">@drawable/wifix_splash_dark</item>
         <item name="android:statusBarColor">@color/wifix_splash_background_dark</item>
         <item name="android:navigationBarColor">@color/wifix_splash_background_dark</item>
         <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowSplashScreenBackground">@color/wifix_splash_background_dark</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/wifix_splash_logo</item>
+        <item name="android:windowSplashScreenIconBackgroundColor">@color/wifix_splash_background_dark</item>
     </style>
 </resources>

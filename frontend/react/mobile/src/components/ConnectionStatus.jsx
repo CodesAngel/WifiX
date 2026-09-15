@@ -49,7 +49,7 @@ const ConnectionStatus = ({ isHost, isApproved, statusMsg }) => {
 
   return (
     <div
-      className={`sticky top-0 z-20 border-l-4 p-3 sm:p-4 rounded-lg ${getStatusColor()} flex items-start gap-3 mb-4 shadow-sm md:static`}
+      className={`border-l-4 p-3 sm:p-4 rounded-lg ${getStatusColor()} flex items-start gap-3 mb-5 shadow-sm`}
     >
       <div className="mt-0.5 shrink-0">{getStatusIcon()}</div>
       <div className="min-w-0 flex-1 text-left">

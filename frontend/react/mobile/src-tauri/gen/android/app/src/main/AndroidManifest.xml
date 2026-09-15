@@ -6,7 +6,8 @@
     <uses-feature android:name="android.software.leanback" android:required="false" />
 
     <application
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/wifix_launcher"
+        android:roundIcon="@mipmap/wifix_launcher_round"
         android:label="@string/app_name"
         android:theme="@style/Theme.wifix_mobile"
         android:usesCleartextTraffic="${usesCleartextTraffic}">

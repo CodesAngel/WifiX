@@ -71,9 +71,9 @@ const Header = ({ files = [], uploadingFiles = {} }) => {
 
   return (
     <>
-      <header className="relative w-full bg-gradient-to-r from-blue-600 to-cyan-500 px-4 py-5 sm:py-7 md:py-8 text-center text-white shadow-lg rounded-b-2xl md:rounded-b-3xl">
+      <header className="relative w-full bg-gradient-to-r from-blue-600 to-cyan-500 px-4 pt-[calc(env(safe-area-inset-top)+1.25rem)] pb-5 sm:pt-7 sm:pb-7 md:py-8 text-center text-white shadow-lg rounded-b-2xl md:rounded-b-3xl">
         {/* Three-dot menu (top-right) */}
-        <div ref={menuRef} className="absolute top-3 right-4">
+        <div ref={menuRef} className="absolute top-[calc(env(safe-area-inset-top)+0.75rem)] right-4 sm:top-3">
           <div className="relative">
             <button
               ref={menuButtonRef}

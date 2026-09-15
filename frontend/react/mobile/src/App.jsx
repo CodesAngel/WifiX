@@ -705,7 +705,7 @@ function App() {
       <Header files={files} uploadingFiles={uploadingFiles} />
 
       <main className="transition-colors duration-300 bg-slate-50 dark:bg-slate-950 text-gray-900 dark:text-white font-sans min-h-screen w-full">
-        <div className="w-full max-w-[1600px] mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-3 sm:py-4 md:py-6">
+        <div className="w-full max-w-[1600px] mx-auto px-3 sm:px-4 md:px-6 lg:px-8 pt-4 pb-3 sm:pt-5 sm:pb-4 md:py-6">
           <div className="w-full min-w-0">
             {/* Connection Status Banner */}
             <ConnectionStatus

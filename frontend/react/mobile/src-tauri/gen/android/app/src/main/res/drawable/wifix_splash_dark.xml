@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/wifix_splash_background_dark" />
+    <item
+        android:width="144dp"
+        android:height="144dp"
+        android:gravity="center">
+        <bitmap
+            android:gravity="center"
+            android:src="@drawable/wifix_splash_logo" />
+    </item>
+</layer-list>
