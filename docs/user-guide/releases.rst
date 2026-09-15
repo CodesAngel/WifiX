@@ -24,7 +24,7 @@ Recommended Release Assets
    * - Signed Android APK or AAB
      - Android production
      - Recommended before public distribution outside testing.
-   * - ``ghcr.io/mehmoodulhaq570/wifix``
+   * - ``ghcr.io/codesangel/wifix``
      - Docker
      - Container image for server-style deployment.
 
@@ -99,14 +99,14 @@ The workflow publishes:
 
 .. code-block:: text
 
-   ghcr.io/mehmoodulhaq570/wifix:WifiX-1.0.1
-   ghcr.io/mehmoodulhaq570/wifix:latest
+   ghcr.io/codesangel/wifix:WifiX-1.0.1
+   ghcr.io/codesangel/wifix:latest
 
 Users can run the image with:
 
 .. code-block:: powershell
 
-   docker run --rm -p 5000:5000 ghcr.io/mehmoodulhaq570/wifix:latest
+   docker run --rm -p 5000:5000 ghcr.io/codesangel/wifix:latest
 
 The workflow uses GitHub's built-in ``GITHUB_TOKEN`` with ``packages: write``
 permission, so no personal access token is required for the automated publish.

@@ -11,7 +11,7 @@ permissions:
   packages: write
 
 env:
-  IMAGE_NAME: ghcr.io/mehmoodulhaq570/wifix
+  IMAGE_NAME: ghcr.io/codesangel/wifix
 
 jobs:
   publish:

@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
   - Updated the backend `zeroconf` dependency from unavailable `0.42.0` to valid `0.43.0`
   - Fixed GitHub Actions Docker publishing failures during `pip install -r backend/requirements.txt`
+  - Fixed GitHub Container Registry publishing by using the repository owner image namespace `ghcr.io/codesangel/wifix`
 
 ### Added - 2026-07-09
 
