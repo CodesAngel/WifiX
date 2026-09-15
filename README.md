@@ -1,11 +1,16 @@
+<div align="center">
+
 # WifiX
 
 **Easy LAN File Sharing Made Simple**
 
 [![Python](https://img.shields.io/badge/Python-3.8%2B-blue.svg)](https://www.python.org/)
+[![React](https://img.shields.io/badge/React-19-61DAFB.svg)](https://react.dev/)
+[![Flask](https://img.shields.io/badge/Flask-2.3.2-000000.svg)](https://flask.palletsprojects.com/)
 [![Rust](https://img.shields.io/badge/Rust-Mobile%20Backend-orange.svg)](https://www.rust-lang.org/)
 [![Tauri](https://img.shields.io/badge/Tauri-Desktop%20%26%20Android-24C8DB.svg)](https://tauri.app/)
 [![Docker](https://img.shields.io/badge/Docker-GHCR-2496ED.svg)](https://github.com/CodesAngel/WifiX/pkgs/container/wifix)
+[![Release](https://img.shields.io/badge/Release-WifiX--1.0.1-blueviolet.svg)](https://github.com/CodesAngel/WifiX/releases/tag/WifiX-1.0.1)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
@@ -17,7 +22,26 @@ download or upload files.
 The project currently supports a Windows desktop app, an Android mobile app,
 and a Docker/server-style deployment.
 
-[Documentation](https://codesangel.github.io/WifiX/) | [Changelog](CHANGELOG.md) | [Security](SECURITY.md) | [Contributing](CONTRIBUTING.md)
+[Download Release](https://github.com/CodesAngel/WifiX/releases/tag/WifiX-1.0.1) | [Documentation](https://codesangel.github.io/WifiX/) | [Changelog](CHANGELOG.md) | [Security](SECURITY.md) | [Contributing](CONTRIBUTING.md)
+
+</div>
+
+## Download
+
+For most people, the easiest way to use WifiX is to download the ready-made
+apps from the GitHub release:
+
+[Download WifiX 1.0.1 for Windows and Android](https://github.com/CodesAngel/WifiX/releases/tag/WifiX-1.0.1)
+
+Release assets include:
+
+| File | Use it for |
+| --- | --- |
+| `WifiX-Desktop-Windows-Setup.exe` | Install WifiX on a Windows laptop or PC |
+| `WifiX-Mobile-Android-Debug.apk` | Install WifiX on an Android phone for testing |
+
+After installing, open WifiX, choose **Become Host**, then share the displayed
+LAN link or QR code with another device on the same Wi-Fi network.
 
 ## Highlights
 
@@ -43,7 +67,19 @@ and a Docker/server-style deployment.
 WifiX is designed for trusted local networks. Host and client devices should be
 on the same Wi-Fi or LAN unless you add a separate relay/cloud layer.
 
-## Quick Start From Source
+## How WifiX Works
+
+1. Open WifiX on the device that will share files.
+2. Click **Become Host**.
+3. Share the LAN URL or QR code shown in the app.
+4. Open that link on another device and click **Connect as Client**.
+5. Approve the request on the host device.
+6. Upload or download files from the approved client.
+
+No account or cloud storage is required. Devices only need to be on the same
+local network.
+
+## Developer Setup
 
 ### Requirements
 
@@ -68,7 +104,7 @@ cd frontend\react
 npm.cmd install
 ```
 
-### Run Desktop/Web Development
+### Run the Web App During Development
 
 Terminal 1, from the repository root:
 
@@ -90,6 +126,7 @@ http://localhost:5173
 ```
 
 Use the displayed LAN link or QR code from another device on the same network.
+This source mode uses the Python backend and the shared React frontend.
 
 ## Build Windows Desktop App
 

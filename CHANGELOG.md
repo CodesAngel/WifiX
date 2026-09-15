@@ -5,13 +5,22 @@ All notable changes to WifiX will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.0.1] - 2026-09-15
+
+### Added - 2026-09-15
+
+- **Docker Release**:
+
+  - Added GitHub Actions publishing for the Docker image on `WifiX-*` release tags
+  - Published Docker image target: `ghcr.io/codesangel/wifix`
+  - Documented Docker release tags: `ghcr.io/codesangel/wifix:WifiX-1.0.1` and `ghcr.io/codesangel/wifix:latest`
 
 ### Changed - 2026-09-15
 
 - **Project README**:
 
   - Rewrote the root README with a professional overview, supported platforms, build commands, Docker usage, architecture notes, release assets, and security guidance
+  - Added the official `WifiX-1.0.1` GitHub Release link for Windows desktop and Android APK downloads
   - Removed duplicated and outdated README sections, including old repository links and obsolete setup guidance
 
 ### Fixed - 2026-09-15
